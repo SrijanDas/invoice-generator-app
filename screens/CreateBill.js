@@ -16,6 +16,7 @@ import { shareAsync } from "expo-sharing";
 import { PdfCode } from "../components/PdfCode";
 import * as React from "react";
 import { Button, Icon } from "@rneui/themed";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const CreateBill = () => {
   const [name, set_Name] = useState("");
@@ -79,19 +80,48 @@ const CreateBill = () => {
     setSelectedPrinter(printer);
   };
 
+  // date picker
   const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(false);
+    setDate(currentDate);
+  };
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.topBtnContainer}>
           <TouchableOpacity style={styles.topBtn}>
-            <Text>Invoice No.</Text>
-            <Text>1</Text>
+            <Text style={{ color: "#808080" }}>Invoice No.</Text>
+            <Text style={{ fontSize: 15 }}>1 </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setOpen(true)} style={styles.topBtn}>
-            <Text>Date</Text>
-            <Text>{date.toLocaleDateString()}</Text>
+          <TouchableOpacity
+            onPress={() => setShowDatePicker(true)}
+            style={styles.topBtn}
+          >
+            <Text style={{ color: "#808080" }}>Date</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                }}
+              >
+                {date.getDate() +
+                  "/" +
+                  date.getMonth() +
+                  "/" +
+                  date.getFullYear()}
+              </Text>
+              <Icon
+                style={{ marginLeft: 2 }}
+                name="down"
+                type="antdesign"
+                color="#808080"
+                size={14}
+              />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -132,6 +162,16 @@ const CreateBill = () => {
       <Button onPress={printToFile} buttonStyle={{ height: 60 }}>
         Create Bill
       </Button>
+
+      {showDatePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
     </>
   );
 };

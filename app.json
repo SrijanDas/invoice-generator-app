@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DS Supplier App",
-    "slug": "DS_Supplier_App",
+    "name": "Invoice Generator App",
+    "slug": "Invoice_Generator_App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package":"com.github.sanketscode.DS_Supplier_App",
+      "package":"com.github.srijan.invoice_generator_app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
