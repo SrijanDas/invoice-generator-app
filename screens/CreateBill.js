@@ -10,15 +10,14 @@ import {
 } from "react-native";
 
 import dateFormat, { masks } from "dateformat";
-import { Picker } from "@react-native-picker/picker";
 import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { PdfCode } from "../components/PdfCode";
 import * as React from "react";
-import { Button, Icon } from "@rneui/themed";
+import { Button, Icon, Input } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-const CreateBill = () => {
+const CreateBill = ({ navigation }) => {
   const [name, set_Name] = useState("");
   const [Address, Set_Address] = useState("");
   const [Mobile_No, Set_Mobile_No] = useState("");
@@ -69,9 +68,7 @@ const CreateBill = () => {
       Set_Address("");
       Set_Mobile_No("");
     } catch (err) {
-      Alert.alert(
-        "Make shure You have Internet Connection or contact @+91 8530730017"
-      );
+      Alert.alert("Make shure You have Internet Connection");
     }
   };
 
@@ -152,10 +149,36 @@ const CreateBill = () => {
               buttonStyle={{ borderRadius: 3 }}
               type="outline"
               title="Add Item"
+              onPress={() => navigation.navigate("Add Items")}
             >
-              <Icon name="add" color="#1e90ff" />
+              <Icon
+                name="pluscircle"
+                type="ant-design"
+                size={20}
+                color="#1e90ff"
+                style={{ marginRight: 5 }}
+              />
               Add Items
             </Button>
+          </View>
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: 15,
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={{ fontSize: 16, fontWeight: "700" }}>
+              Total Amount
+            </Text>
+            <Input
+              leftIcon={{ type: "font-awesome", name: "rupee", size: 18 }}
+              placeholder=""
+              containerStyle={{ width: 150 }}
+              keyboardType="number-pad"
+            />
           </View>
         </ScrollView>
       </View>

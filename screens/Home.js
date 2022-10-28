@@ -55,8 +55,8 @@ const Home = ({ navigation }) => {
           icon={{ name: "add", color: "white" }}
           color="crimson"
           placement="right"
-          title="Add Item"
-          // onPress={() => navigation.navigate("CreateBill")}
+          title="New Item"
+          onPress={() => navigation.navigate("NewItem")}
         />
       )}
     </>

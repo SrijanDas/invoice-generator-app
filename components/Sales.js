@@ -55,7 +55,12 @@ const Sales = () => {
                     <Icon name="print" color="#808080" type="ionicons" />
                   </TouchableOpacity>
                   <TouchableOpacity>
-                    <Icon name="share" color="#808080" type="ionicons" />
+                    <Icon
+                      name="share-a"
+                      color="#808080"
+                      type="fontisto"
+                      size={17}
+                    />
                   </TouchableOpacity>
                 </View>
               </View>
