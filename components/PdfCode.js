@@ -44,7 +44,7 @@ const PdfCode = (
         flex-direction: column;
         align-items: flex-start;
         font-size: 2rem;  
-        padding-left: 20px;">दख्खन सप्लायर्स अपशिंगे<br></div>
+        padding-left: 20px;">RR Enterprise<br></div>
     <div style="
     display: flex;
     flex-direction: column;
@@ -89,8 +89,8 @@ const PdfCode = (
                 <br/>
                 <br/>
                 <p>Mobile No :- <br/>
-                +91 8208553219<br/>
-                +91 9309780761
+                +91 XXXX<br/>
+                +91 XXXX
                 </p>
             </div>
         </div>
@@ -156,9 +156,9 @@ const PdfCode = (
         <div style="height:auto; padding: 20px;">
 
             <p>Account Details - <br/>
-            Bank Name: HDFC BANK, DHANGARWADI<br/>
-            Bank Account no : 50100272967118<br/>
-            Bank IFSC code : HDFC0004850<br/>
+            Bank Name: HDFC BANK<br/>
+            Bank Account no : XXXXXX <br/>
+            Bank IFSC code : HDFCXXXXX<br/>
             </p>
 
         </div>

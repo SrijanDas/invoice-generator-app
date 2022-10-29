@@ -131,6 +131,7 @@ const CreateBill = ({ navigation }) => {
               onChangeText={(text) => set_Name(text)}
               value={name}
               placeholder="Full Name"
+              autoFocus
             />
           </View>
 
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     // width:100,
     marginTop: 4,
     height: 40,
-    borderColor: "#000",
+    borderColor: "#a9a9a9",
     borderWidth: 1,
     borderRadius: 4,
     padding: 4,

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Invoice Generator App",
-    "slug": "Invoice_Generator_App",
+    "name": "RR Enterprise",
+    "slug": "RR_Enterprise",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

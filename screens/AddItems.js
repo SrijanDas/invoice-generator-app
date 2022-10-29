@@ -9,11 +9,15 @@ const AddItems = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={{ fontSize: 20, marginBottom: 15 }}>Item 1</Text>
+        {/* <Text style={{ fontSize: 20, marginBottom: 15 }}>Item 1</Text> */}
         <View style={styles.pickerContainer}>
-          <Picker>
+          <Picker mode="dropdown">
             {itemsData.map((item, i) => (
-              <Picker.Item key={i} label={item.name} value={item.name} />
+              <Picker.Item
+                key={i}
+                label={`${item.name}   ${item.available_stock}`}
+                value={item.name}
+              />
             ))}
           </Picker>
         </View>

@@ -13,6 +13,7 @@ const NewItem = () => {
             // onChangeText={onChangeText}
             // value={text}
             placeholder="Item Name"
+            autoFocus
           />
         </View>
 
