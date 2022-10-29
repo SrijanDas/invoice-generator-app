@@ -1,14 +1,12 @@
 export default itemsData = [
   {
-    name: "Tata Salt Iodized Salt  (1 kg)",
-    price: 163,
-    uom: "each",
+    name: "T shirt",
+    price: 500,
     available_stock: 500,
   },
   {
-    name: "Daawat Biryani Basmati Rice  (1 kg)",
-    price: 172,
-    uom: "each",
+    name: "Pant",
+    price: 480,
     available_stock: 150,
   },
 ];

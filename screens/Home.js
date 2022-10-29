@@ -1,5 +1,5 @@
 import { StyleSheet, StatusBar } from "react-native";
-import { FAB, Tab, Text, TabView } from "@rneui/themed";
+import { FAB, Tab, TabView } from "@rneui/themed";
 import { useState } from "react";
 import { Sales, Items } from "../components";
 
