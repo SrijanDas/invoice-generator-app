@@ -3,7 +3,7 @@ import { Button } from "@rneui/themed";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const NewItem = ({ navigation }) => {
+const NewItem = ({ navigation, route }) => {
   const [itemName, setItemName] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [netPrice, setNetPrice] = useState("");
@@ -27,17 +27,24 @@ const NewItem = ({ navigation }) => {
         availableStock,
       };
 
+      let newItemsList = [];
+
       if (itemsList != null) {
         // item data exists add to the list
-        let newItemsList = [...JSON.parse(itemsList), newItem];
+        newItemsList = [...JSON.parse(itemsList), newItem];
         await AsyncStorage.setItem("itemsList", JSON.stringify(newItemsList));
       } else {
         // // item data does not exist
         // create new item data list and add it to the list
+        newItemsList.push(newItem);
         await AsyncStorage.setItem("itemsList", JSON.stringify([newItem]));
       }
 
-      navigation.goBack();
+      navigation.navigate({
+        name: "Home",
+        params: { itemsData: newItemsList },
+        merge: true,
+      });
     } catch (e) {
       // saving error
     }

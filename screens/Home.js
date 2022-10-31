@@ -1,11 +1,33 @@
 import { StyleSheet, StatusBar } from "react-native";
 import { FAB, Tab, TabView } from "@rneui/themed";
-import { useState } from "react";
 import { Sales, Items } from "../components";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
   const [visible, setVisible] = useState(true);
   const [index, setIndex] = useState(0);
+
+  // items
+  const [itemsData, setItemsData] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("itemsList");
+        setItemsData(jsonValue != null ? JSON.parse(jsonValue) : []);
+      } catch (e) {
+        // error reading value
+        alert(e.message);
+      }
+    };
+
+    console.log("useeffect triggered");
+    if (route.params?.itemsData) {
+      setItemsData(route.params.itemsData);
+    } else {
+      getData();
+    }
+  }, [route.params?.itemsData]);
 
   return (
     <>
@@ -36,7 +58,7 @@ const Home = ({ navigation }) => {
           <Sales />
         </TabView.Item>
         <TabView.Item style={{ width: "100%", height: "auto" }}>
-          <Items />
+          <Items itemsData={itemsData} />
         </TabView.Item>
       </TabView>
 

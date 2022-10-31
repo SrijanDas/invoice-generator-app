@@ -1,25 +1,8 @@
 // import itemsData from "../assets/data/itemsData";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { Text, ListItem } from "@rneui/themed";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
-import { useEffect } from "react";
 
-const Items = () => {
-  const [itemsData, setItemsData] = useState([]);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem("itemsList");
-        setItemsData(jsonValue != null ? JSON.parse(jsonValue) : []);
-      } catch (e) {
-        // error reading value
-        alert(e.message);
-      }
-    };
-    getData();
-  }, []);
-
+const Items = ({ itemsData }) => {
   return (
     <ScrollView>
       {itemsData.length ? (
