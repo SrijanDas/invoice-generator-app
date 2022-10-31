@@ -1,4 +1,5 @@
 import Sales from "./Sales";
 import Items from "./Items";
+import StatsContainer from "./StatsContainer";
 
-export { Sales, Items };
+export { Sales, Items, StatsContainer };

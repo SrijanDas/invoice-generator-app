@@ -1,8 +1,8 @@
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home, CreateBill, AddItems, NewItem } from "./screens";
 import { Button, Icon } from "@rneui/themed";
+import { Home, CreateBill, AddItems, NewItem, ItemDetails } from "./screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +46,13 @@ export default function App() {
               </Button>
             ),
           })}
+        />
+        <Stack.Screen
+          name="ItemDetails"
+          component={ItemDetails}
+          options={{
+            headerTitle: "Item Details",
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

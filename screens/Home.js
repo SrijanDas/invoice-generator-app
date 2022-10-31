@@ -11,7 +11,7 @@ const Home = ({ navigation, route }) => {
   // items
   const [itemsData, setItemsData] = useState([]);
   useEffect(() => {
-    const getData = async () => {
+    const getItemsData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem("itemsList");
         setItemsData(jsonValue != null ? JSON.parse(jsonValue) : []);
@@ -20,12 +20,10 @@ const Home = ({ navigation, route }) => {
         alert(e.message);
       }
     };
-
-    console.log("useeffect triggered");
     if (route.params?.itemsData) {
       setItemsData(route.params.itemsData);
     } else {
-      getData();
+      getItemsData();
     }
   }, [route.params?.itemsData]);
 
@@ -51,6 +49,11 @@ const Home = ({ navigation, route }) => {
           titleStyle={{ fontSize: 12 }}
           icon={{ name: "inventory", type: "materialIcons", color: "white" }}
         />
+        <Tab.Item
+          title="Party"
+          titleStyle={{ fontSize: 12 }}
+          icon={{ name: "inventory", type: "materialIcons", color: "white" }}
+        />
       </Tab>
 
       <TabView value={index} onChange={setIndex} animationType="spring">
@@ -58,7 +61,11 @@ const Home = ({ navigation, route }) => {
           <Sales />
         </TabView.Item>
         <TabView.Item style={{ width: "100%", height: "auto" }}>
-          <Items itemsData={itemsData} />
+          <Items
+            navigation={navigation}
+            itemsData={itemsData}
+            setItemsData={setItemsData}
+          />
         </TabView.Item>
       </TabView>
 
