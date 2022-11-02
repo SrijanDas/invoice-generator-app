@@ -28,10 +28,14 @@
     "react-native": "0.64.3",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "~3.10.1",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "react-native-webview": "^11.23.1",
+    "rn-pdf-reader-js": "^4.1.1",
+    "rn-pdf-reader-js-improved": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@expo/webpack-config": "^0.17.3",
     "typescript": "~4.3.5"
   },
   "private": true

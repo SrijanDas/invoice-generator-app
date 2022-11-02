@@ -93,7 +93,7 @@ const Home = ({ navigation, route }) => {
 
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item style={{ width: "100%", height: "auto" }}>
-          <Sales salesData={salesData} />
+          <Sales salesData={salesData} setSalesData={setSalesData} />
         </TabView.Item>
         <TabView.Item style={{ width: "100%", height: "auto" }}>
           <Items

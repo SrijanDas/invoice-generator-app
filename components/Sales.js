@@ -1,10 +1,15 @@
 // import salesData from "../assets/data/salesData";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { Text, ListItem, Icon } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Sales = ({ salesData }) => {
+const Sales = ({ salesData, setSalesData }) => {
+  const handleDelete = async () => {
+    await AsyncStorage.clear();
+    setSalesData([]);
+  };
   return (
-    <ScrollView>
+    <ScrollView style={{ marginBottom: 50 }}>
       {salesData.map((sale, i) => (
         <TouchableOpacity key={i}>
           <ListItem bottomDivider>
@@ -51,8 +56,15 @@ const Sales = ({ salesData }) => {
                     alignItems: "center",
                   }}
                 >
-                  <TouchableOpacity style={{ marginRight: 20 }}>
-                    <Icon name="print" color="#808080" type="ionicons" />
+                  <TouchableOpacity
+                    onPress={handleDelete}
+                    style={{ marginRight: 20 }}
+                  >
+                    <Icon
+                      name="delete"
+                      color="#808080"
+                      type="MaterialCommunityIcons"
+                    />
                   </TouchableOpacity>
                   <TouchableOpacity>
                     <Icon
@@ -68,7 +80,6 @@ const Sales = ({ salesData }) => {
           </ListItem>
         </TouchableOpacity>
       ))}
-      <ListItem style={{ height: 80 }}></ListItem>
     </ScrollView>
   );
 };

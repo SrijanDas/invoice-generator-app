@@ -3,7 +3,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Button, Icon } from "@rneui/themed";
 import { TouchableOpacity } from "react-native";
-import { Home, CreateBill, AddItems, NewItem, ItemDetails } from "./screens";
+import {
+  Home,
+  CreateBill,
+  AddItems,
+  NewItem,
+  ItemDetails,
+  Preview,
+} from "./screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +67,13 @@ export default function App() {
           component={ItemDetails}
           options={{
             headerTitle: "Item Details",
+          }}
+        />
+        <Stack.Screen
+          name="Preview"
+          component={Preview}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>

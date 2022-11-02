@@ -9,9 +9,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import dateFormat from "dateformat";
-import * as Print from "expo-print";
-import { shareAsync } from "expo-sharing";
-import { PdfCode } from "../components/PdfCode";
 import * as React from "react";
 import { Button, Icon, Input } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -28,7 +25,6 @@ const CreateBill = ({ navigation, route }) => {
   const [ReceivedBalance, SetReceivedBalance] = useState("");
   const [PaymentType, setPaymentType] = useState("Cash");
   const [RemaningBalance, setRemaningBalance] = useState("Paid");
-  const [selectedPrinter, setSelectedPrinter] = React.useState();
   const [isloading, setIsloading] = useState(false);
 
   // date picker
@@ -50,12 +46,16 @@ const CreateBill = ({ navigation, route }) => {
 
     const newBill = {
       name,
+      date: dateFormat(date, "dd/mm/yyyy"),
       address: Address,
       mobileNo: Mobile_No,
       quantity: Quantity,
       invoice: Invoice,
       products: Product,
       total: Total,
+      receivedBalance: ReceivedBalance,
+      paymentType: PaymentType,
+      remaningBalance: RemaningBalance,
     };
 
     try {
@@ -85,9 +85,9 @@ const CreateBill = ({ navigation, route }) => {
       setIsloading(false);
 
       navigation.navigate({
-        name: "Home",
-        params: { salesData: newSalesData },
-        merge: true,
+        name: "Preview",
+        params: { salesData: newSalesData, newBill: newBill },
+        // merge: true,
       });
       // console.log("created bill");
     } catch (e) {
@@ -95,47 +95,6 @@ const CreateBill = ({ navigation, route }) => {
       alert(e.message);
     }
     // console.log("created bill");
-  };
-
-  const print = async () => {
-    // On iOS/android prints the given html. On web prints the HTML from the current page.
-    await Print.printAsync({
-      html,
-      printerUrl: selectedPrinter?.url, // iOS only
-    });
-  };
-
-  const printToFile = async () => {
-    let html = PdfCode(
-      name,
-      date,
-      Address,
-      Mobile_No,
-      Quantity,
-      Invoice,
-      Product,
-      Total,
-      ReceivedBalance,
-      PaymentType,
-      RemaningBalance
-    );
-    // On iOS/android prints the given html. On web prints the HTML from the current page.
-    try {
-      const { uri } = await Print.printToFileAsync({
-        html,
-      });
-
-      console.log("File has been saved to:", uri);
-
-      await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
-    } catch (err) {
-      Alert.alert("Make shure You have Internet Connection");
-    }
-  };
-
-  const selectPrinter = async () => {
-    const printer = await Print.selectPrinterAsync(); // iOS only
-    setSelectedPrinter(printer);
   };
 
   return (

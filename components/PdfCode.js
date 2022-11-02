@@ -12,19 +12,19 @@ function GetTime(date) {
   return strTime;
 }
 
-const PdfCode = (
+const PdfCode = ({
   name,
   date,
-  Address,
-  Mobile_No,
-  Quantity,
-  Invoice,
-  Product,
-  Total,
-  ReceivedBalance,
-  PaymentType,
-  RemainingBalance
-) => `
+  address,
+  mobileNo,
+  quantity,
+  invoice,
+  products,
+  total,
+  receivedBalance,
+  paymentType,
+  remainingBalance,
+}) => `
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
@@ -59,7 +59,7 @@ const PdfCode = (
         height: 90px;
     width: 90px;
     margin-right:15px;
-        " src=${Logo} />
+        " src="../assets/logo.png" />
     </div>
     <hr />
         <hr/>
@@ -80,12 +80,12 @@ const PdfCode = (
                 <p class="invoice-user">
                     Bill To : <br/>
                     Name : ${name} <br/>
-                    ${Address && `Address : ${Address} <br/>`}
-                    ${Mobile_No && `Phone No : +91 ${Mobile_No} <br/>`}
+                    ${address && `Address : ${address} <br/>`}
+                    ${mobileNo && `Phone No : +91 ${mobileNo} <br/>`}
                 </p>
             </div>
             <div style="align-items: flex-end;">
-                <p>Invoice No : ${Invoice}<br/>
+                <p>Invoice No : ${invoice}<br/>
                 Date : ${dateFormat(date, "dd-mm-yyyy")}<br/>
                 Time :${GetTime(new Date())}</p>
                 <br/>
@@ -113,12 +113,12 @@ const PdfCode = (
                 </tr>
                 <tr style="background-color: rgba(246, 221, 178, 0.8);">
                   <td style="text-align: center;height: 30px;">1</td>
-                  <td style="text-align: center;height: 30px;">${Product}</td>
+                  <td style="text-align: center;height: 30px;">${products}</td>
                   <td style="text-align: center;height: 30px;">${parseFloat(
-                    parseFloat(Total) / parseFloat(Quantity)
+                    parseFloat(total) / parseFloat(quantity)
                   ).toFixed(2)}</td>
-                  <td style="text-align: center;height: 30px;">${Quantity}</td>
-                  <td style="text-align: center;height: 30px;">₹ ${Total}</td>
+                  <td style="text-align: center;height: 30px;">${quantity}</td>
+                  <td style="text-align: center;height: 30px;">₹ ${total}</td>
                 </tr>
                
               </table>
@@ -135,20 +135,20 @@ const PdfCode = (
                   <table style="width: 50%; align-self: flex-end;">
                   <tr>
                   <th style="text-align: start;">Grand Total : </th>
-                  <td style="text-align: center;height: 30px;">₹ ${Total}</td>
+                  <td style="text-align: center;height: 30px;">₹ ${total}</td>
               </tr>
               <!--  <tr style="border-bottom: solid ;">
                             <th style="text-align: start;">Received Balance : </th>
-                            <td style="text-align: center;height: 30px;">₹ ${ReceivedBalance}</td>
+                            <td style="text-align: center;height: 30px;">₹ ${receivedBalance}</td>
                         </tr>
                        
                         <tr style="border-bottom: solid ;">
                         <th style="text-align: start;">Remaining Balance : </th>
-                        <td style="text-align: center;height: 30px;">₹ ${RemainingBalance}</td>
+                        <td style="text-align: center;height: 30px;">₹ ${remainingBalance}</td>
                     </tr>
                      <tr>
                             <th style="text-align: start;">Payment Method: </th>
-                            <td style="text-align: center;height: 30px;">${PaymentType}</td>
+                            <td style="text-align: center;height: 30px;">${paymentType}</td>
                         </tr>
                         -->
                   </table>
