@@ -1,12 +1,37 @@
-import { StyleSheet, StatusBar } from "react-native";
+import { StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { FAB, Tab, TabView } from "@rneui/themed";
 import { Sales, Items } from "../components";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import COLORS from "../constants/COLORS";
 
 const Home = ({ navigation, route }) => {
   const [visible, setVisible] = useState(true);
   const [index, setIndex] = useState(0);
+
+  // sales
+  const [salesData, setSalesData] = useState([]);
+  // console.log(salesData);
+  useEffect(() => {
+    const getSalesData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("salesData");
+        setSalesData(jsonValue != null ? JSON.parse(jsonValue) : []);
+      } catch (e) {
+        // error reading value
+        alert(e.message);
+      }
+    };
+    if (route.params?.salesData) {
+      setSalesData(route.params.salesData);
+    } else {
+      getSalesData();
+    }
+    return () => {
+      setSalesData([]); // This worked for me
+    };
+  }, [route.params?.salesData]);
 
   // items
   const [itemsData, setItemsData] = useState([]);
@@ -29,36 +54,46 @@ const Home = ({ navigation, route }) => {
 
   return (
     <>
-      <StatusBar />
+      <StatusBar style="auto" />
       <Tab
         value={index}
         onChange={(e) => setIndex(e)}
         indicatorStyle={{
-          backgroundColor: "white",
+          backgroundColor: COLORS.blue,
           height: 3,
         }}
-        variant="primary"
+        // variant="default"
       >
         <Tab.Item
           title="Transactions"
-          titleStyle={{ fontSize: 12 }}
-          icon={{ name: "timer", type: "ionicon", color: "white" }}
+          titleStyle={{ fontSize: 12, color: "black" }}
+          icon={{ name: "timer", type: "ionicon", color: COLORS.blue }}
+          containerStyle={(active) => ({
+            backgroundColor: active ? "white" : undefined,
+          })}
         />
         <Tab.Item
           title="Items"
-          titleStyle={{ fontSize: 12 }}
-          icon={{ name: "inventory", type: "materialIcons", color: "white" }}
+          titleStyle={{ fontSize: 12, color: "black" }}
+          icon={{
+            name: "inventory",
+            type: "materialIcons",
+            color: COLORS.blue,
+          }}
+          containerStyle={(active) => ({
+            backgroundColor: active ? "white" : undefined,
+          })}
         />
-        <Tab.Item
+        {/* <Tab.Item
           title="Party"
           titleStyle={{ fontSize: 12 }}
           icon={{ name: "inventory", type: "materialIcons", color: "white" }}
-        />
+        /> */}
       </Tab>
 
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item style={{ width: "100%", height: "auto" }}>
-          <Sales />
+          <Sales salesData={salesData} />
         </TabView.Item>
         <TabView.Item style={{ width: "100%", height: "auto" }}>
           <Items
@@ -76,7 +111,11 @@ const Home = ({ navigation, route }) => {
           color="#1e90ff"
           placement="right"
           title="New Bill"
-          onPress={() => navigation.navigate("CreateBill")}
+          onPress={() =>
+            navigation.navigate("CreateBill", {
+              invoiceNo: salesData.length + 1,
+            })
+          }
         />
       ) : (
         <FAB

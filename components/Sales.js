@@ -1,8 +1,8 @@
-import salesData from "../assets/data/salesData";
+// import salesData from "../assets/data/salesData";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { Text, ListItem, Icon } from "@rneui/themed";
 
-const Sales = () => {
+const Sales = ({ salesData }) => {
   return (
     <ScrollView>
       {salesData.map((sale, i) => (
@@ -23,7 +23,7 @@ const Sales = () => {
                   <Text style={{ color: "#808080" }}>
                     {new Date().toLocaleDateString()}
                   </Text>
-                  <Text style={{ color: "#808080" }}>#{i + 1}</Text>
+                  <Text style={{ color: "#808080" }}>#{sale.invoice}</Text>
                 </View>
               </View>
               <View
@@ -68,6 +68,7 @@ const Sales = () => {
           </ListItem>
         </TouchableOpacity>
       ))}
+      <ListItem style={{ height: 80 }}></ListItem>
     </ScrollView>
   );
 };

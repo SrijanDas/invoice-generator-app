@@ -8,28 +8,94 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-
-import dateFormat, { masks } from "dateformat";
+import dateFormat from "dateformat";
 import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { PdfCode } from "../components/PdfCode";
 import * as React from "react";
 import { Button, Icon, Input } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CreateBill = ({ navigation }) => {
+const CreateBill = ({ navigation, route }) => {
   const [name, set_Name] = useState("");
   const [Address, Set_Address] = useState("");
   const [Mobile_No, Set_Mobile_No] = useState("");
   const [Quantity, setQuantity] = useState("");
-  const now = new Date();
-  const [Invoice, setInvoice] = useState(dateFormat(now, "ddmmyyhhMss"));
+  const [Invoice, setInvoice] = useState(route.params.invoiceNo);
   const [Product, Set_Product] = useState("");
   const [Total, setTotal] = useState("");
   const [ReceivedBalance, SetReceivedBalance] = useState("");
   const [PaymentType, setPaymentType] = useState("Cash");
   const [RemaningBalance, setRemaningBalance] = useState("Paid");
   const [selectedPrinter, setSelectedPrinter] = React.useState();
+  const [isloading, setIsloading] = useState(false);
+
+  // date picker
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(false);
+    setDate(currentDate);
+  };
+
+  const createBill = async () => {
+    if (!name.length || !Total.length) {
+      console.log(name, Total);
+      alert("Please fill all the mandatory fields ( * )");
+      return;
+    }
+    setIsloading(true);
+
+    const newBill = {
+      name,
+      address: Address,
+      mobileNo: Mobile_No,
+      quantity: Quantity,
+      invoice: Invoice,
+      products: Product,
+      total: Total,
+    };
+
+    try {
+      let newSalesData = [];
+
+      const salesData = await AsyncStorage.getItem("salesData");
+
+      if (salesData != null) {
+        // item data exists add to the list
+        newSalesData = [...JSON.parse(salesData), newBill];
+      } else {
+        // // item data does not exist
+        // create new item data list and add it to the list
+        newSalesData.push(newBill);
+      }
+
+      await AsyncStorage.setItem("salesData", JSON.stringify(newSalesData));
+
+      // restoring states
+      set_Name("");
+      setInvoice(newSalesData.length + 1);
+      setTotal("");
+      setQuantity("");
+      SetReceivedBalance("");
+      Set_Address("");
+      Set_Mobile_No("");
+      setIsloading(false);
+
+      navigation.navigate({
+        name: "Home",
+        params: { salesData: newSalesData },
+        merge: true,
+      });
+      // console.log("created bill");
+    } catch (e) {
+      // saving error
+      alert(e.message);
+    }
+    // console.log("created bill");
+  };
 
   const print = async () => {
     // On iOS/android prints the given html. On web prints the HTML from the current page.
@@ -42,6 +108,7 @@ const CreateBill = ({ navigation }) => {
   const printToFile = async () => {
     let html = PdfCode(
       name,
+      date,
       Address,
       Mobile_No,
       Quantity,
@@ -57,16 +124,10 @@ const CreateBill = ({ navigation }) => {
       const { uri } = await Print.printToFileAsync({
         html,
       });
-      console.log("File has been saved to:", uri);
-      await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
 
-      set_Name("");
-      setInvoice(dateFormat(now, "ddmmyyhhMss"));
-      setTotal("");
-      setQuantity("");
-      SetReceivedBalance("");
-      Set_Address("");
-      Set_Mobile_No("");
+      console.log("File has been saved to:", uri);
+
+      await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
     } catch (err) {
       Alert.alert("Make shure You have Internet Connection");
     }
@@ -77,22 +138,13 @@ const CreateBill = ({ navigation }) => {
     setSelectedPrinter(printer);
   };
 
-  // date picker
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowDatePicker(false);
-    setDate(currentDate);
-  };
-
   return (
     <>
       <View style={styles.container}>
         <View style={styles.topBtnContainer}>
           <TouchableOpacity style={styles.topBtn}>
             <Text style={{ color: "#808080" }}>Invoice No.</Text>
-            <Text style={{ fontSize: 15 }}>1 </Text>
+            <Text style={{ fontSize: 15 }}>{Invoice}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setShowDatePicker(true)}
@@ -105,11 +157,7 @@ const CreateBill = ({ navigation }) => {
                   fontSize: 15,
                 }}
               >
-                {date.getDate() +
-                  "/" +
-                  date.getMonth() +
-                  "/" +
-                  date.getFullYear()}
+                {dateFormat(date, "dd/mm/yyyy")}
               </Text>
               <Icon
                 style={{ marginLeft: 2 }}
@@ -125,7 +173,7 @@ const CreateBill = ({ navigation }) => {
         <ScrollView>
           {/* <OutlinedTextField label="Phone number" keyboardType="phone-pad" /> */}
           <View style={styles.InputContainer}>
-            <Text>Name :</Text>
+            <Text>Name* :</Text>
             <TextInput
               style={styles.textInput}
               onChangeText={(text) => set_Name(text)}
@@ -162,28 +210,26 @@ const CreateBill = ({ navigation }) => {
               Add Items
             </Button>
           </View>
-          <View
-            style={{
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              paddingHorizontal: 15,
-              justifyContent: "space-between",
-            }}
-          >
+          <View style={styles.bottomRow}>
             <Text style={{ fontSize: 16, fontWeight: "700" }}>
-              Total Amount
+              Total Amount*
             </Text>
             <Input
               leftIcon={{ type: "font-awesome", name: "rupee", size: 18 }}
               placeholder=""
               containerStyle={{ width: 150 }}
               keyboardType="number-pad"
+              onChangeText={(text) => setTotal(text)}
+              value={Total}
             />
           </View>
         </ScrollView>
       </View>
-      <Button onPress={printToFile} buttonStyle={{ height: 60 }}>
+      <Button
+        onPress={createBill}
+        buttonStyle={{ height: 60 }}
+        loading={isloading}
+      >
         Create Bill
       </Button>
 
@@ -264,6 +310,13 @@ const styles = StyleSheet.create({
   },
   printer: {
     textAlign: "center",
+  },
+  bottomRow: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    justifyContent: "space-between",
   },
 });
 

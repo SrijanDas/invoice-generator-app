@@ -1,4 +1,5 @@
 import dateFormat, { masks } from "dateformat";
+import Logo from "../assets/logo.png";
 
 function GetTime(date) {
   var hours = parseInt(dateFormat(date, "hh"));
@@ -13,6 +14,7 @@ function GetTime(date) {
 
 const PdfCode = (
   name,
+  date,
   Address,
   Mobile_No,
   Quantity,
@@ -50,14 +52,14 @@ const PdfCode = (
     flex-direction: column;
     align-items: flex-start; 
     padding-left: 20px;
-    ">At Post Apshinge tal koregoan Dist Satara.</div>
+    ">Company address and email id.</div>
     </div>
    
         <img style="
         height: 90px;
     width: 90px;
     margin-right:15px;
-        " src="https://i.ibb.co/Rv9KpGf/logo.png" />
+        " src=${Logo} />
     </div>
     <hr />
         <hr/>
@@ -78,19 +80,19 @@ const PdfCode = (
                 <p class="invoice-user">
                     Bill To : <br/>
                     Name : ${name} <br/>
-                    Address : ${Address} <br/>
-                    Phone No : +91 ${Mobile_No}
+                    ${Address && `Address : ${Address} <br/>`}
+                    ${Mobile_No && `Phone No : +91 ${Mobile_No} <br/>`}
                 </p>
             </div>
             <div style="align-items: flex-end;">
                 <p>Invoice No : ${Invoice}<br/>
-                Date : ${dateFormat(Date.now(), "dd-mm-yyyy")}<br/>
+                Date : ${dateFormat(date, "dd-mm-yyyy")}<br/>
                 Time :${GetTime(new Date())}</p>
                 <br/>
                 <br/>
                 <p>Mobile No :- <br/>
-                +91 XXXX<br/>
-                +91 XXXX
+                +91 Company NUMBER<br/>
+                +91 Company NUMBER
                 </p>
             </div>
         </div>
@@ -106,7 +108,7 @@ const PdfCode = (
                   <th style="height: 30px;">Index</th>
                   <th style="height: 30px;">Product Name</th>
                   <th style="height: 30px;">Price(Per)</th>
-                  <th style="height: 30px;">Bras</th>
+                  <th style="height: 30px;">Quantity</th>
                   <th style="height: 30px;">Total</th>
                 </tr>
                 <tr style="background-color: rgba(246, 221, 178, 0.8);">
@@ -135,7 +137,7 @@ const PdfCode = (
                   <th style="text-align: start;">Grand Total : </th>
                   <td style="text-align: center;height: 30px;">₹ ${Total}</td>
               </tr>
-                        <tr style="border-bottom: solid ;">
+              <!--  <tr style="border-bottom: solid ;">
                             <th style="text-align: start;">Received Balance : </th>
                             <td style="text-align: center;height: 30px;">₹ ${ReceivedBalance}</td>
                         </tr>
@@ -144,10 +146,11 @@ const PdfCode = (
                         <th style="text-align: start;">Remaining Balance : </th>
                         <td style="text-align: center;height: 30px;">₹ ${RemainingBalance}</td>
                     </tr>
-                        <tr>
+                     <tr>
                             <th style="text-align: start;">Payment Method: </th>
                             <td style="text-align: center;height: 30px;">${PaymentType}</td>
                         </tr>
+                        -->
                   </table>
               </div>
         </div>

@@ -2,6 +2,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Button, Icon } from "@rneui/themed";
+import { TouchableOpacity } from "react-native";
 import { Home, CreateBill, AddItems, NewItem, ItemDetails } from "./screens";
 
 const Stack = createNativeStackNavigator();
@@ -13,7 +14,14 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{ headerShown: false }}
+          options={{
+            headerTitle: "RR Enterprise",
+            headerLeft: () => (
+              <TouchableOpacity>
+                <Icon name="menu" type="Feather" style={{ marginRight: 6 }} />
+              </TouchableOpacity>
+            ),
+          }}
         />
         <Stack.Screen
           name="CreateBill"
