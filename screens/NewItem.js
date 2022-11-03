@@ -1,4 +1,11 @@
-import { View, Text, TextInput, SafeAreaView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { Button } from "@rneui/themed";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,8 +14,9 @@ const NewItem = ({ navigation, route }) => {
   const [itemName, setItemName] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [netPrice, setNetPrice] = useState("");
-  const [salePrice, setSalePrice] = useState("");
-  const [availableStock, setAvailableStock] = useState("");
+  const [sellPrice, setSellPrice] = useState("");
+  const [openingStock, setOpeningStock] = useState("");
+  const [reservedStock, setReservedStock] = useState("");
 
   const handleSubmit = async () => {
     if (itemName === "") {
@@ -23,8 +31,10 @@ const NewItem = ({ navigation, route }) => {
         itemName,
         itemCode,
         netPrice,
-        salePrice,
-        availableStock,
+        sellPrice,
+        openingStock,
+        reservedStock,
+        closingStock: openingStock - reservedStock,
       };
 
       let newItemsList = [];
@@ -51,7 +61,7 @@ const NewItem = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <SafeAreaView style={{ paddingVertical: 20, paddingHorizontal: 15 }}>
         <View style={styles.inputContainer}>
           <Text>Item Name</Text>
@@ -86,23 +96,37 @@ const NewItem = ({ navigation, route }) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text>Sale Price</Text>
+          <Text>Sell Price</Text>
           <TextInput
             style={styles.input}
-            onChangeText={(t) => setSalePrice(t)}
-            value={salePrice}
+            onChangeText={(t) => setSellPrice(t)}
+            value={sellPrice}
             keyboardType="numeric"
             placeholder="Sale Price"
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text>Available Stock</Text>
+          <Text>Opening Stock</Text>
           <TextInput
             style={styles.input}
-            onChangeText={(t) => setAvailableStock(t)}
-            value={availableStock}
+            onChangeText={(t) => {
+              setOpeningStock(t);
+            }}
+            value={openingStock.toString()}
             keyboardType="numeric"
-            placeholder="Available Stock"
+            placeholder="Opening Stock"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text>Reserved Stock</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(t) => {
+              setReservedStock(t);
+            }}
+            value={reservedStock.toString()}
+            keyboardType="numeric"
+            placeholder="Reserved Stock"
           />
         </View>
       </SafeAreaView>
@@ -127,15 +151,15 @@ const NewItem = ({ navigation, route }) => {
           onPress={handleSubmit}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: "white",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
   },
   inputContainer: {
     marginBottom: 8,

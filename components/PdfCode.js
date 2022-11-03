@@ -89,11 +89,7 @@ const PdfCode = ({
                 Date : ${dateFormat(date, "dd-mm-yyyy")}<br/>
                 Time :${GetTime(new Date())}</p>
                 <br/>
-                <br/>
-                <p>Mobile No :- <br/>
-                +91 Company NUMBER<br/>
-                +91 Company NUMBER
-                </p>
+              
             </div>
         </div>
         <hr/>
@@ -156,15 +152,7 @@ const PdfCode = ({
         </div>
         <hr/>
         <hr/>
-        <div style="height:auto; padding: 20px;">
-
-            <p>Account Details - <br/>
-            Bank Name: HDFC BANK<br/>
-            Bank Account no : XXXXXX <br/>
-            Bank IFSC code : HDFCXXXXX<br/>
-            </p>
-
-        </div>
+        
 
     </div>
   </body>

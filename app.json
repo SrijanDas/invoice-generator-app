@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package":"com.github.srijan.invoice_generator_app",
+      "package": "com.github.srijan.invoice_generator_app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -28,6 +28,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d91a0594-71d1-4fb0-88cf-8a6a3e9a5377"
+      }
     }
   }
 }

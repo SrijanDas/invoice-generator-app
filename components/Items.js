@@ -42,9 +42,9 @@ const Items = ({ navigation, itemsData, setItemsData }) => {
                     marginTop: 5,
                   }}
                 >
-                  <StatsContainer title="Sell Price" data={item.salePrice} />
+                  <StatsContainer title="Sell Price" data={item.sellPrice} />
                   <StatsContainer title="Net Price" data={item.netPrice} />
-                  <StatsContainer title="In Stock" data={item.availableStock} />
+                  <StatsContainer title="In Stock" data={item.closingStock} />
                   <TouchableOpacity onPress={() => handleDelete(item)}>
                     <Icon
                       size={18}
