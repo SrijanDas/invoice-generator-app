@@ -10,6 +10,7 @@ import {
   NewItem,
   ItemDetails,
   Preview,
+  BillDetails,
 } from "./screens";
 
 const Stack = createNativeStackNavigator();
@@ -41,26 +42,29 @@ export default function App() {
           options={{ headerTitle: "Add New Item" }}
         />
         <Stack.Screen
-          name="Add Items"
+          name="AddItems"
           component={AddItems}
-          options={({ navigation, route }) => ({
-            headerRight: () => (
-              <Button
-                onPress={() => navigation.navigate("NewItem")}
-                buttonStyle={{ borderRadius: 20 }}
-                color="#dc143c"
-              >
-                <Icon
-                  name="pluscircle"
-                  type="ant-design"
-                  size={20}
-                  color="white"
-                  style={{ marginRight: 10 }}
-                />
-                Add New Item
-              </Button>
-            ),
-          })}
+          options={{
+            headerTitle: "Add Items",
+          }}
+          // ({ navigation, route }) => ({
+          // headerRight: () => (
+          //   <Button
+          //     onPress={() => navigation.navigate("NewItem")}
+          //     buttonStyle={{ borderRadius: 20 }}
+          //     color="#dc143c"
+          //   >
+          //     <Icon
+          //       name="pluscircle"
+          //       type="ant-design"
+          //       size={20}
+          //       color="white"
+          //       style={{ marginRight: 10 }}
+          //     />
+          //     Add New Item
+          //   </Button>
+          // ),
+          // })}
         />
         <Stack.Screen
           name="ItemDetails"
@@ -69,11 +73,12 @@ export default function App() {
             headerTitle: "Item Details",
           }}
         />
+        <Stack.Screen name="Preview" component={Preview} options={{}} />
         <Stack.Screen
-          name="Preview"
-          component={Preview}
+          name="BillDetails"
+          component={BillDetails}
           options={{
-            headerShown: false,
+            headerTitle: "Bill Details",
           }}
         />
       </Stack.Navigator>

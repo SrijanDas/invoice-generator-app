@@ -12,7 +12,7 @@ import { StatusBar } from "expo-status-bar";
 const Preview = ({ navigation, route }) => {
   const [selectedPrinter, setSelectedPrinter] = useState();
 
-  const { salesData, newBill } = route.params;
+  const { salesData, newBill, hideDoneBtn } = route.params;
   const html = PdfCode(newBill);
 
   const print = async () => {
@@ -48,7 +48,7 @@ const Preview = ({ navigation, route }) => {
     <>
       <StatusBar style="auto" />
       <WebView
-        style={{ marginBottom: 20, marginTop: 50 }}
+        style={{ marginBottom: 20, marginTop: 10 }}
         originWhitelist={["*"]}
         source={{ html: html }}
       />
@@ -60,19 +60,21 @@ const Preview = ({ navigation, route }) => {
           bottom: 15,
         }}
       >
-        <FAB
-          visible={true}
-          title="Go Back"
-          icon={{ name: "arrowleft", color: "white", type: "antdesign" }}
-          color={COLORS.blue}
-          onPress={() =>
-            navigation.navigate({
-              name: "Home",
-              params: { salesData: salesData },
-              merge: true,
-            })
-          }
-        />
+        {!hideDoneBtn && (
+          <FAB
+            visible={true}
+            title="Done"
+            icon={{ name: "check", color: "white", type: "antdesign" }}
+            color={COLORS.blue}
+            onPress={() =>
+              navigation.navigate({
+                name: "Home",
+                params: { salesData: salesData },
+                merge: true,
+              })
+            }
+          />
+        )}
         <FAB
           visible={true}
           title="Share"

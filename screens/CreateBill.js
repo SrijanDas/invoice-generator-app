@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,19 +13,37 @@ import * as React from "react";
 import { Button, Icon, Input } from "@rneui/themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Picker } from "@react-native-picker/picker";
+import COLORS from "../constants/COLORS";
+import { ProductContainer } from "../components";
 
 const CreateBill = ({ navigation, route }) => {
-  const [name, set_Name] = useState("");
-  const [Address, Set_Address] = useState("");
-  const [Mobile_No, Set_Mobile_No] = useState("");
-  const [Quantity, setQuantity] = useState("");
+  const { oldData } = route.params;
+
+  const [name, set_Name] = useState(oldData?.name ? oldData.name : "");
+  const [Address, Set_Address] = useState(
+    oldData?.address ? oldData.address : ""
+  );
+  const [Mobile_No, Set_Mobile_No] = useState(
+    oldData?.mobileNo ? oldData.mobileNo : ""
+  );
+  // const [Quantity, setQuantity] = useState("");
   const [Invoice, setInvoice] = useState(route.params.invoiceNo);
-  const [Product, Set_Product] = useState("");
+  const [products, setProducts] = useState(
+    oldData?.products ? oldData.products : []
+  );
   const [Total, setTotal] = useState("");
   const [ReceivedBalance, SetReceivedBalance] = useState("");
   const [PaymentType, setPaymentType] = useState("Cash");
   const [RemaningBalance, setRemaningBalance] = useState("Paid");
   const [isloading, setIsloading] = useState(false);
+
+  useEffect(() => {
+    if (route.params?.total) {
+      setTotal(route.params.total);
+      console.log("in new bill", route.params.total);
+    }
+  }, [route.params?.total]);
 
   // date picker
   const [date, setDate] = useState(new Date());
@@ -49,9 +67,8 @@ const CreateBill = ({ navigation, route }) => {
       date: dateFormat(date, "dd/mm/yyyy"),
       address: Address,
       mobileNo: Mobile_No,
-      quantity: Quantity,
       invoice: Invoice,
-      products: Product,
+      products,
       total: Total,
       receivedBalance: ReceivedBalance,
       paymentType: PaymentType,
@@ -78,7 +95,7 @@ const CreateBill = ({ navigation, route }) => {
       set_Name("");
       setInvoice(newSalesData.length + 1);
       setTotal("");
-      setQuantity("");
+      setProducts([]);
       SetReceivedBalance("");
       Set_Address("");
       Set_Mobile_No("");
@@ -95,6 +112,20 @@ const CreateBill = ({ navigation, route }) => {
       alert(e.message);
     }
     // console.log("created bill");
+  };
+
+  // console.log(oldData);
+  // console.log("Total", oldData?.total, Total);
+
+  const handleDelete = (index) => {
+    if (index > -1) {
+      // only splice array when item is found
+      let itemToRemove = products[index];
+      setTotal(Total - itemToRemove.total);
+      let tempProducts = products;
+      tempProducts.splice(index, 1); // 2nd parameter means remove one item only
+      setProducts(tempProducts);
+    }
   };
 
   return (
@@ -152,12 +183,52 @@ const CreateBill = ({ navigation, route }) => {
               placeholder="Mobile No"
             />
           </View>
+          {products.length ? (
+            <View style={{ padding: 15 }}>
+              <View
+                style={{
+                  backgroundColor: COLORS.lightblue,
+                  flexDirection: "row",
+                  borderRadius: 6,
+                  padding: 8,
+                }}
+              >
+                <Icon
+                  name="arrow-drop-down-circle"
+                  type="materialicons"
+                  color="white"
+                  size={16}
+                  style={{ marginRight: 5 }}
+                />
+                <Text style={{ color: "white" }}>Billed Items</Text>
+              </View>
+
+              {products.map((p, i) => (
+                <ProductContainer
+                  key={i}
+                  product={p}
+                  index={i}
+                  handleDelete={handleDelete}
+                />
+              ))}
+            </View>
+          ) : null}
           <View style={styles.InputContainer}>
             <Button
               buttonStyle={{ borderRadius: 3 }}
               type="outline"
               title="Add Item"
-              onPress={() => navigation.navigate("Add Items")}
+              onPress={() =>
+                navigation.navigate("AddItems", {
+                  invoiceNo: Invoice,
+                  billData: {
+                    name,
+                    mobileNo: Mobile_No,
+                    products,
+                    total: Total,
+                  },
+                })
+              }
             >
               <Icon
                 name="pluscircle"
@@ -179,7 +250,7 @@ const CreateBill = ({ navigation, route }) => {
               containerStyle={{ width: 150 }}
               keyboardType="number-pad"
               onChangeText={(text) => setTotal(text)}
-              value={Total}
+              value={Total.toString()}
             />
           </View>
         </ScrollView>
