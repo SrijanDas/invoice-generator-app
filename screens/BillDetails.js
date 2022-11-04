@@ -46,16 +46,16 @@ const BillDetails = () => {
             />
           </View>
 
-          {/* <View style={styles.InputContainer}>
-            <Text>Mobile No : </Text>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="number-pad"
-              onChangeText={(text) => Set_Mobile_No(text)}
-              value={Mobile_No}
-              placeholder="Mobile No"
-            />
-          </View> */}
+          {sale.mobileNo && (
+            <View style={styles.InputContainer}>
+              <Text>Mobile No : </Text>
+              <TextInput
+                style={styles.textInput}
+                value={sale.mobileNo}
+                editable={false}
+              />
+            </View>
+          )}
           {sale.products.length ? (
             <View style={{ padding: 15 }}>
               <View

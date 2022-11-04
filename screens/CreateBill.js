@@ -41,7 +41,6 @@ const CreateBill = ({ navigation, route }) => {
   useEffect(() => {
     if (route.params?.total) {
       setTotal(route.params.total);
-      console.log("in new bill", route.params.total);
     }
   }, [route.params?.total]);
 

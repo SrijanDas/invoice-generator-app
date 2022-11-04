@@ -51,13 +51,16 @@ const Preview = ({ navigation, route }) => {
         style={{ marginBottom: 20, marginTop: 10 }}
         originWhitelist={["*"]}
         source={{ html: html }}
+        injectedJavaScript={`const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=1'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `}
+        scalesPageToFit={false}
       />
       <View
         style={{
-          backgroundColor: "transparent",
+          // backgroundColor: "white",
           flexDirection: "row",
           justifyContent: "space-around",
-          bottom: 15,
+          backfaceVisibility: "visible",
+          marginBottom: 15,
         }}
       >
         {!hideDoneBtn && (

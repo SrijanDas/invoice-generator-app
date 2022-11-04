@@ -24,7 +24,42 @@ const PdfCode = ({
   receivedBalance,
   paymentType,
   remainingBalance,
-}) => `
+}) => {
+  let table = "";
+  for (let i = 0; i < products.length; i++) {
+    const item = products[i];
+    const subtotal = item.price * item.unit;
+    const discount = (subtotal * (item.discount / 100)).toFixed(2);
+    const tax = ((subtotal - discount) * (item.tax / 100)).toFixed(2);
+
+    table += `
+    <tr style="background-color: rgba(246, 221, 178, 0.8);">
+      <td style="text-align: center;height: 40px;">${i + 1}</td>
+      <td style="text-align: center;height: 40px;">${item.itemName}</td>
+      <td style="text-align: center;height: 40px;">${item.unit}</td>
+      <td style="text-align: center;height: 40px;">₹ ${item.price}</td>
+      <td style="text-align: center;height: 40px;">₹ ${
+        discount + `<br/>(${item.discount} %)`
+      }</td>
+      <td style="text-align: center;height: 40px;">₹ ${
+        tax + `<br/>(${item.tax} %)`
+      }</td>
+      <td style="text-align: center;height: 40px;">₹ ${item.total}</td>
+    </tr>
+    `;
+  }
+  table += `
+  <tr style="background-color: white; color: black;">
+      <td style="text-align: center;height: 40px;"></td>
+      <td style="text-align: center;height: 40px; font-weight:bold;">Total</td>
+      <td style="text-align: center;height: 40px;"></td>
+      <td style="text-align: center;height: 40px;"></td>
+      <td style="text-align: center;height: 40px;"></td>
+      <td style="text-align: center;height: 40px;"></td>
+      <td style="text-align: center;height: 40px; font-weight:bold;">₹ ${total}</td>
+  </tr>
+  `;
+  let html = `
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
@@ -44,27 +79,15 @@ const PdfCode = ({
     <div class="data-title">
         <div style="display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        font-size: 2rem;  
-        padding-left: 20px;">RR Enterprise<br></div>
-    <div style="
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
-    padding-left: 20px;
-    ">Company address and email id.</div>
+        align-items: flex-start;        
+        padding: 20px;">
+        <span style="font-size: 2rem;font-weight: bold; ">RR Enterprise</span>
+        <span style="">email@gmail.com | PH: +91 983123456</span>
+        </div>
     </div>
-   
-        <img style="
-        height: 90px;
-    width: 90px;
-    margin-right:15px;
-        " src="../assets/logo.png" />
-    </div>
-    <hr />
+        
+    </div>    
         <hr/>
-
-
         <div style="
         width: 100%;
         height: auto;
@@ -92,8 +115,7 @@ const PdfCode = ({
               
             </div>
         </div>
-        <hr/>
-        <hr/>
+      
         <div style="height: auto;
         width: 100%;
         display: flex;
@@ -101,38 +123,20 @@ const PdfCode = ({
         align-items: center;">
             <table style="width:100%; border-collapse: collapse;">
                 <tr style="background-color: rgba(255, 0, 62, 0.8); color: white;">
-                  <th style="height: 30px;">Index</th>
-                  <th style="height: 30px;">Product Name</th>
-                  <th style="height: 30px;">Price(Per)</th>
-                  <th style="height: 30px;">Quantity</th>
-                  <th style="height: 30px;">Total</th>
+                  <th style="height: 30px;">#</th>
+                  <th style="height: 30px;">Item Name</th>
+                  <th style="height: 30px;">Unit</th>
+                  <th style="height: 30px;">Price/unit</th>
+                  <th style="height: 30px;">Discount(%)</th>
+                  <th style="height: 30px;">Tax</th>
+                  <th style="height: 30px;">Sub Total</th>
                 </tr>
-                <tr style="background-color: rgba(246, 221, 178, 0.8);">
-                  <td style="text-align: center;height: 30px;">1</td>
-                  <td style="text-align: center;height: 30px;">${products}</td>
-                  <td style="text-align: center;height: 30px;">${parseFloat(
-                    parseFloat(total) / parseFloat(quantity)
-                  ).toFixed(2)}</td>
-                  <td style="text-align: center;height: 30px;">${quantity}</td>
-                  <td style="text-align: center;height: 30px;">₹ ${total}</td>
-                </tr>
+                ${table}              
                
               </table>
-              
-                <!-- <div style="align-self: flex-end;margin-right: 10px;font-style: bold;">Received balance :  1</div>
-          
-              <hr/>
-              <div style="align-self: flex-end;margin-right: 10px;font-style: bold;">Grand Total : 1</div>
-              <hr/>
-              <div style="align-self: flex-end;margin-right: 10px;font-style: bold;">Payment Mode : Cash</div>
-              <hr/> -->
-              <div style="width:100%;align-self: flex-end; display: flex; flex-direction: row;">
-                <div style="width:40%"></div>
-                  <table style="width: 50%; align-self: flex-end;">
-                  <tr>
-                  <th style="text-align: start;">Grand Total : </th>
-                  <td style="text-align: center;height: 30px;">₹ ${total}</td>
-              </tr>
+              <hr /> 
+
+                
               <!--  <tr style="border-bottom: solid ;">
                             <th style="text-align: start;">Received Balance : </th>
                             <td style="text-align: center;height: 30px;">₹ ${receivedBalance}</td>
@@ -150,15 +154,16 @@ const PdfCode = ({
                   </table>
               </div>
         </div>
-        <hr/>
-        <hr/>
+
+    
         
 
     </div>
   </body>
 </html>
 `;
-
+  return html;
+};
 const style = `
     .container {
       margin : 15px;
